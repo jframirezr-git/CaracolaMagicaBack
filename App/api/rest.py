@@ -24,3 +24,10 @@ async def relative_mistake(request: Request):
     data: dict = await request.json()
     response = await MathController.relative_mistake(data=data)
     return JSONResponse(response)
+
+
+@app.route(path='/correct_decimals', methods=['POST'])
+async def correct_decimals(request: Request):
+    data: dict = await request.json()
+    response = await MathController.correct_decimals(data=data)
+    return JSONResponse(response)
