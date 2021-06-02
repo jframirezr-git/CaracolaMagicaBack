@@ -8,9 +8,15 @@ How use it:
 
 This is the documentation for the endpoints:
 
-        Absolute Mistate:
-            end_point: /absolut_mistake
+        Absolute Mistake:
+            end point: /absolut_mistake
             request: {
-                        'x1': X absoluto: number,
-                        'x2': X relative: number
+                        'x1': number,
+                        'x2': number
+                        }
+        Relative Mistake:
+            end point: /relative_mistake
+            request: {
+                        'error': number,
+                        'x': number
                         }

@@ -17,3 +17,10 @@ async def absolut_mistake(request: Request):
     data: dict = await request.json()
     response = await MathController.absolut_mistake(data=data)
     return JSONResponse(response)
+
+
+@app.route(path='/relative_mistake', methods=['POST'])
+async def relative_mistake(request: Request):
+    data: dict = await request.json()
+    response = await MathController.relative_mistake(data=data)
+    return JSONResponse(response)
