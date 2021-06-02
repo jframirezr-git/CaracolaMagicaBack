@@ -56,3 +56,28 @@ This is the documentation for the endpoints:
                         'N': number
                         }
             responde: {"correct": boolean} | {"correct":boolean, "result": number"}
+
+        Newton:
+             Parameters
+            ----------
+            f : function
+                Function for which we are searching for a solution f(x)=0.
+            df : function
+                Derivative of f(x).
+            x0 : number
+                Initial guess for a solution f(x)=0.
+            epsilon : number
+                Stopping criteria is abs(f(x)) < epsilon.
+            max_iter : integer
+                Maximum number of iterations of Newton's method.
+
+             end point: /bisection
+            method: POST
+            request: {
+                        'f': string,
+                        'df': number,
+                        'x0': number,
+                        'epsilon': number,
+                        'max_iter': number
+                        }
+            responde: {"correct": boolean} | {"correct":boolean, "result": number"}

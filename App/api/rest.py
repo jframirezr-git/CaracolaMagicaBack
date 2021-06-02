@@ -38,3 +38,10 @@ async def bisection(request: Request):
     data: dict = await request.json()
     response = await MathController.bisection(data=data)
     return JSONResponse(response)
+
+
+@app.route(path='/newton', methods=['POST'])
+async def newton(request: Request):
+    data: dict = await request.json()
+    response = await MathController.newton(data=data)
+    return JSONResponse(response)
