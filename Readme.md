@@ -71,7 +71,7 @@ This is the documentation for the endpoints:
             max_iter : integer
                 Maximum number of iterations of Newton's method.
 
-             end point: /bisection
+             end point: /newton
             method: POST
             request: {
                         'f': string,
