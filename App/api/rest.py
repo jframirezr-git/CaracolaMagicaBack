@@ -1,6 +1,7 @@
 from starlette.responses import JSONResponse
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
+from starlette.requests import Request
 
 from App.controller import MathController
 
@@ -11,7 +12,8 @@ app.add_middleware(CORSMiddleware, allow_methods=['POST', 'GET'], allow_origins=
 
 
 # Here are the rest methods.
-@app.route(path='/login', methods=['GET'])
-async def homepage(request):
-    response = await MathController.absolut_mistake()
+@app.route(path='/absolut_mistake', methods=['POST'])
+async def absolut_mistake(request: Request):
+    data: dict = await request.json()
+    response = await MathController.absolut_mistake(data=data)
     return JSONResponse(response)
