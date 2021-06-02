@@ -31,3 +31,10 @@ async def correct_decimals(request: Request):
     data: dict = await request.json()
     response = await MathController.correct_decimals(data=data)
     return JSONResponse(response)
+
+
+@app.route(path='/bisection', methods=['POST'])
+async def bisection(request: Request):
+    data: dict = await request.json()
+    response = await MathController.bisection(data=data)
+    return JSONResponse(response)

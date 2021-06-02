@@ -35,3 +35,24 @@ This is the documentation for the endpoints:
                         'decimal': number
                         }
             responde: {"correct": boolean}
+
+        Bisection:
+            Parameters
+           ----------
+           f : function
+               The function for which we are trying to approximate a solution f(x)=0.
+           a,b : numbers
+               The interval in which to search for a solution. The function returns
+               None if f(a)*f(b) >= 0 since a solution is not guaranteed.
+           N : (positive) integer
+               The number of iterations to implement.
+
+            end point: /bisection
+            method: POST
+            request: {
+                        'f': string,
+                        'a': number,
+                        'b': number,
+                        'N': number
+                        }
+            responde: {"correct": boolean} | {"correct":boolean, "result": number"}
