@@ -45,3 +45,17 @@ async def newton(request: Request):
     data: dict = await request.json()
     response = await MathController.newton(data=data)
     return JSONResponse(response)
+
+
+@app.route(path='/secant', methods=['POST'])
+async def newton(request: Request):
+    data: dict = await request.json()
+    response = await MathController.secant(data=data)
+    return JSONResponse(response)
+
+
+@app.route(path='/jacobi', methods=['POST'])
+async def newton(request: Request):
+    data: dict = await request.json()
+    response = await MathController.jacobi(data=data)
+    return JSONResponse(response)

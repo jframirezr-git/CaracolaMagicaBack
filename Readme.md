@@ -81,3 +81,51 @@ This is the documentation for the endpoints:
                         'max_iter': number
                         }
             responde: {"correct": boolean} | {"correct":boolean, "result": number"}
+
+        Secant:
+             Parameters
+            ----------
+            f : function
+                The function for which we are trying to approximate a solution f(x)=0.
+            a,b : numbers
+                The interval in which to search for a solution. The function returns
+                None if f(a)*f(b) >= 0 since a solution is not guaranteed.
+            N : (positive) integer
+                The number of iterations to implement.
+
+            end point: /secant
+            method: POST
+            request: {
+                        'f': string,
+                        'a': number,
+                        'b': number,
+                        'N': number
+                        }
+            responde: {"correct": boolean} | {"correct":boolean, "result": number"}
+
+        Jacobi:
+            Solves the equation Ax=b via the Jacobi iterative method.
+            Parameters
+            ----------
+            A,b,N,x
+            
+
+            Example
+            ----------
+            {
+                "A": [[2.0,1.0],[5.0,7.0]],
+                "b": [11.0,13.0],
+                "N": 5,
+                "x": [1.0,1.0]  #x can be string but void "".
+            }
+            end point: /jacobi
+            method: POST
+            request: {
+                        'A': array,
+                        'b': array,
+                        'N': number,
+                        'x': array
+                        }
+            responde: {"result": "string"}
+
+            
