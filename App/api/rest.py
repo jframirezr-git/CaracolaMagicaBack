@@ -61,3 +61,31 @@ async def newton(request: Request):
     data: dict = await request.json()
     response = await MathController.jacobi(data=data)
     return JSONResponse(response)
+
+
+@app.route(path='/gauss', methods=['POST'])
+async def newton(request: Request):
+    data: dict = await request.json()
+    response = await MathController.gauss(data=data)
+    return JSONResponse(response)
+
+
+@app.route(path='/gausspi', methods=['POST'])
+async def newton(request: Request):
+    data: dict = await request.json()
+    response = await MathController.gausspi(data=data)
+    return JSONResponse(response)
+
+
+@app.route(path='/gaussto', methods=['POST'])
+async def newton(request: Request):
+    data: dict = await request.json()
+    response = await MathController.gaussto(data=data)
+    return JSONResponse(response)
+
+
+@app.route(path='/gausslu', methods=['POST'])
+async def newton(request: Request):
+    data: dict = await request.json()
+    response = await MathController.gausslu(data=data)
+    return JSONResponse(response)

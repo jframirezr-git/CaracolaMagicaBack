@@ -1,6 +1,8 @@
 import json
+import copy
 
 from numpy import array, zeros, diag, diagflat, dot
+import numpy as np
 
 
 # Here we implements the differents math methods.
@@ -178,5 +180,88 @@ class MathController:
         for i in range(data['N']):
             x = (data['b'] - dot(R, x)) / D
         lists = x.tolist()
+        result = json.dumps(lists)
+        return {'result': result}
+
+    @classmethod
+    async def gauss(cls, data: dict):
+        M = array(data['M'])
+        n = len(M)
+        for i in range(n - 1):
+            for j in range(i + 1, n):
+                if M[j, i] != 0:
+                    M[j, i:n + 1] = M[j, i:n + 1] - [M[j, i] / M[i, i]] * M[i, i:n + 1]
+
+        lists = M.tolist()
+        result = json.dumps(lists)
+        return {'result': result}
+
+    @classmethod
+    async def gausspi(cls, data: dict):
+        M = array(data['M'])
+        n = len(M)
+        for i in range(n - 1):
+            aux0 = max(abs(M[i + 1:n, i]))
+            aux = np.where(M == aux0)[0]
+            if aux0 > abs(M[i, i]):
+                aux2 = copy.deepcopy(M[i + aux, i:n + 1])
+                M[aux + i, i:n + 1] = M[i, i:n + 1]
+                M[i, i:n + 1] = aux2
+
+            for j in range(i + 1, n):
+                if M[j, i] != 0:
+                    M[j, i:n + 1] = M[j, i:n + 1] - [M[j, i] / M[i, i]] * M[i, i:n + 1]
+
+        lists = M.tolist()
+        result = json.dumps(lists)
+        return {'result': result}
+
+    @classmethod
+    async def gaussto(cls, data: dict):
+        M = array(data['M'])
+        n = len(M)
+        cambi = []
+        for i in range(n - 1):
+            (a, b) = np.where(abs(M[i:n, i:]) == abs(M[i:n, i:n]).max(0).max(0))
+            if (b[0] + i) != i:
+                cambi = [i, b[0] + i]
+                aux2 = copy.deepcopy(M[:, b[0] + i])
+                M[:, b[0] + i] = M[:, i]
+                M[:, i] = aux2
+
+            if a[0] + i != i:
+                print("entro")
+                aux2 = copy.deepcopy(M[i + a[0], i:n + 1])
+                M[a[0] + i, i:n + 1] = M[i, i:n + 1]
+                M[i, i:n + 1] = aux2
+
+            for j in range(i + 1, n):
+                if M[j, i] != 0:
+                    M[j, i:n + 1] = M[j, i:n + 1] - [M[j, i] / M[i, i]] * M[i, i:n + 1]
+
+        lists = M.tolist()
+        result = json.dumps(lists)
+        return {'result': result}
+
+    @classmethod
+    async def gausslu(cls, data: dict):
+        M = array(data['M'])
+        n = len(M)
+        L = np.identity(n)
+        U = np.zeros((n, n))
+
+        for i in range(n - 1):
+            for j in range(i + 1, n):
+                if M[j, i] != 0:
+                    L[j, i] = M[j, i] / M[i, i]
+                    M[j, i:n] = M[j, i:n] - [M[j, i] / M[i, i]] * M[i, i:n]
+
+            U[i, i:n] = M[i, i:n]
+            print(L)
+            # U[i + 1, i + 1:n] = M[i + 1, i + 1:n]
+
+        # U[n-1, n-1] = M[n-1, n-1]
+
+        lists = M.tolist()
         result = json.dumps(lists)
         return {'result': result}
