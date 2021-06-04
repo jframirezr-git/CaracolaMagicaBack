@@ -257,11 +257,41 @@ class MathController:
                     M[j, i:n] = M[j, i:n] - [M[j, i] / M[i, i]] * M[i, i:n]
 
             U[i, i:n] = M[i, i:n]
-            print(L)
-            # U[i + 1, i + 1:n] = M[i + 1, i + 1:n]
+            U[i + 1, i + 1:n] = M[i + 1, i + 1:n]
+        U[n - 1, n - 1] = M[n - 1, n - 1]
 
-        # U[n-1, n-1] = M[n-1, n-1]
+        print(U)
+        lists = M.tolist()
+        result = json.dumps(lists)
+        return {'result': result}
 
+    @classmethod
+    async def gaussseidel(cls, data: dict):
+        global xact
+        M = array(data['M'])
+        b = data['b']
+        x0 = data['x0']
+        tol = data['tol']
+        nmax = data['nmax']
+
+        D = np.diag(np.diag(M))
+
+        L = - np.tril(M) + D
+
+        U = - np.triu(M) + D
+        T = np.dot(np.linalg.inv(D - L), U)
+        C = np.dot(np.linalg.inv(D - L), b)
+        xant = x0
+        E = 1000
+        cont = 0
+
+        while E > tol and cont < nmax:
+            xact = T * xant + C
+            E = np.linalg.norm(xant - xact)
+            xant = xact
+            cont = cont + 1
+
+        print(xact, cont, E)
         lists = M.tolist()
         result = json.dumps(lists)
         return {'result': result}

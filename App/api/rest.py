@@ -89,3 +89,10 @@ async def newton(request: Request):
     data: dict = await request.json()
     response = await MathController.gausslu(data=data)
     return JSONResponse(response)
+
+
+@app.route(path='/gaussseidel', methods=['POST'])
+async def newton(request: Request):
+    data: dict = await request.json()
+    response = await MathController.gaussseidel(data=data)
+    return JSONResponse(response)
