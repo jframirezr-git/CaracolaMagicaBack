@@ -185,6 +185,7 @@ class MathController:
 
     @classmethod
     async def gauss(cls, data: dict):
+        global x
         M = array(data['M'])
         n = len(M)
         for i in range(n - 1):
@@ -192,7 +193,7 @@ class MathController:
                 if M[j, i] != 0:
                     M[j, i:n + 1] = M[j, i:n + 1] - [M[j, i] / M[i, i]] * M[i, i:n + 1]
 
-        lists = M.tolist()
+        lists = cls.sustregr(M, n).tolist()
         result = json.dumps(lists)
         return {'result': result}
 
@@ -212,7 +213,7 @@ class MathController:
                 if M[j, i] != 0:
                     M[j, i:n + 1] = M[j, i:n + 1] - [M[j, i] / M[i, i]] * M[i, i:n + 1]
 
-        lists = M.tolist()
+        lists = cls.sustregr(M, n).tolist()
         result = json.dumps(lists)
         return {'result': result}
 
@@ -230,7 +231,6 @@ class MathController:
                 M[:, i] = aux2
 
             if a[0] + i != i:
-                print("entro")
                 aux2 = copy.deepcopy(M[i + a[0], i:n + 1])
                 M[a[0] + i, i:n + 1] = M[i, i:n + 1]
                 M[i, i:n + 1] = aux2
@@ -239,7 +239,7 @@ class MathController:
                 if M[j, i] != 0:
                     M[j, i:n + 1] = M[j, i:n + 1] - [M[j, i] / M[i, i]] * M[i, i:n + 1]
 
-        lists = M.tolist()
+        lists = cls.sustregr(M, n).tolist()
         result = json.dumps(lists)
         return {'result': result}
 
@@ -290,8 +290,88 @@ class MathController:
             E = np.linalg.norm(xant - xact)
             xant = xact
             cont = cont + 1
-
+        res = {xact, cont, E}
         print(xact, cont, E)
-        lists = M.tolist()
+        result = json.dumps(res)
+        return {'result': result}
+
+    @classmethod
+    async def vander(cls, data: dict):
+        X = array(data['x'])
+        Y = array(data['y'])
+        n = len(X)
+        A = np.zeros((n, n))
+        for i in range(n):
+            x = np.conj(X ** (n - 1 - i))
+            A[:, i] = np.transpose(x)
+        Coef = np.linalg.lstsq(A, np.transpose(np.conj(Y)))[0]
+        print(Coef)
+        lists = Coef.tolist()
         result = json.dumps(lists)
         return {'result': result}
+
+    @classmethod
+    async def difdivididas(cls, data: dict):
+        X = array(data['x'])
+        Y = array(data['y'])
+
+        n = len(X)
+        D = np.zeros((n, n))
+
+        D[:, 0] = np.transpose(np.conj(Y))
+        print(D)
+        for i in range(1, n):
+            aux0 = D[i - 1:n, i - 1]
+            aux = np.diff(aux0)
+            aux2 = X[i:n] - X[0:n - i]
+            D[i:n, i] = np.divide(aux, np.transpose(np.conj(aux2)))
+        Coef = np.diag(np.transpose(np.conj(D)))
+        lists = Coef.tolist()
+        result = json.dumps(lists)
+        return {'result': result}
+
+    @classmethod
+    async def spline(cls, data: dict):
+        X = array(data['x'])
+        Y = array(data['y'])
+        n = len(X)
+        m = 3 * (n - 1)
+        A = np.zeros((m, m))
+        b = zeros((m, 1))
+        Coef = zeros((n - 1, 3))
+
+        for i in range(n - 1):
+            A[i + 1, 3 * (i + 1) - 3:3 * (i + 1)] = [(X[i + 1]) ** 2, X[i + 1], 1]
+            b[i + 1] = Y[i + 1]
+        A[0, 0:3] = [(X[0] ** 2), (X[0] ** 1), 1]
+        b[0] = Y[0]
+
+        for i in range(1, n - 1):
+            A[n - 2 + i + 1, 3 * i - 3:3 * (i + 1)] = [(X[i]) ** 2, X[i], 1, -(X[i]) ** 2, -X[i], - 1]
+            b[n - 2 + i + 1] = 0
+
+        for i in range(1, n - 1):
+            A[2 * n - 4 + i + 1, 3 * i - 3:3 * (i + 1)] = [2 * X[i], 1, 0, -2 * X[i], -1, 0]
+            b[2 * n - 4 + i + 1] = 0
+
+        A[m - 1, 0] = 2
+        b[m - 1] = 0
+        Saux = np.linalg.lstsq(A, b)[0]
+        # for i in range(1, n - 1):
+        # Coef[i, :] = Saux[3 * i - 2:3 * i]
+        print(Saux)
+        print(A)
+
+        lists = Coef.tolist()
+        result = json.dumps(lists)
+        return {'result': result}
+
+    @staticmethod
+    def sustregr(M, n):
+        M[n - 1] = M[n - 1][n] / M[n - 1][n - 1]
+        for i in range(n - 2, -1, -1):
+            M[i] = M[i][n]
+            for j in range(i + 1, n):
+                M[i] = M[i] - M[i][j] * M[j]
+            M[i] = M[i] / M[i][i]
+        return M

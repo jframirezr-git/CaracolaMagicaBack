@@ -96,3 +96,24 @@ async def newton(request: Request):
     data: dict = await request.json()
     response = await MathController.gaussseidel(data=data)
     return JSONResponse(response)
+
+
+@app.route(path='/vander', methods=['POST'])
+async def newton(request: Request):
+    data: dict = await request.json()
+    response = await MathController.vander(data=data)
+    return JSONResponse(response)
+
+
+@app.route(path='/difdivididas', methods=['POST'])
+async def newton(request: Request):
+    data: dict = await request.json()
+    response = await MathController.difdivididas(data=data)
+    return JSONResponse(response)
+
+
+@app.route(path='/spline', methods=['POST'])
+async def newton(request: Request):
+    data: dict = await request.json()
+    response = await MathController.spline(data=data)
+    return JSONResponse(response)
