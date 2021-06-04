@@ -2,15 +2,14 @@ from starlette.responses import JSONResponse
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
-from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
 
 from App.controller import MathController
 
 # initialize project
 app = Starlette()
 # add CORDS politics
-app.add_middleware(CORSMiddleware, allow_methods=['POST'], allow_origins=['*'], allow_headers=['*'])
-app.add_middleware(ProxyHeadersMiddleware)
+app.add_middleware(CORSMiddleware, allow_origins=['*'])
+
 
 
 # Here are the rest methods.
