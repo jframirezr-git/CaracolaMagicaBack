@@ -11,6 +11,7 @@ App/api/__pycache__/rest.cpython-39.pyc
 
 # Distribution / packaging
 .Python
+App/__pycache/
 env/
 venv/
 build/
