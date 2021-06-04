@@ -4,12 +4,15 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 
 from App.controller import MathController
+from starlette.middleware import Middleware
+
+middleware = [
+    Middleware(CORSMiddleware, allow_origins=['*'])
+]
 
 # initialize project
-app = Starlette()
+app = Starlette(middleware=middleware)
 # add CORDS politics
-app.add_middleware(CORSMiddleware, allow_origins=['*'])
-
 
 
 # Here are the rest methods.
