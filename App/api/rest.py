@@ -9,7 +9,7 @@ from App.controller import MathController
 # initialize project
 app = Starlette()
 # add CORDS politics
-app.add_middleware(CORSMiddleware, allow_methods=['POST', 'GET'], allow_origins=['*'], allow_headers=['*'])
+app.add_middleware(CORSMiddleware, allow_methods=['POST'], allow_origins=['*'], allow_headers=['*'])
 app.add_middleware(ProxyHeadersMiddleware)
 
 
